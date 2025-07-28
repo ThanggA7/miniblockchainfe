@@ -19,15 +19,6 @@ const Header = () => {
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="border rounded-xl pl-10 pr-4 py-2 text-sm"
-            />
-            <FiSearch className="absolute left-3 top-2.5 text-gray-400" />
-          </div>
-
           <HiOutlineUserCircle className="text-3xl" />
         </div>
       </div>
