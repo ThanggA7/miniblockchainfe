@@ -4,9 +4,10 @@ import { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { FaSignOutAlt, FaCog } from "react-icons/fa";
 import { HiOutlineUserCircle } from "react-icons/hi";
+
 const Header = () => {
   return (
-    <div className="p-3">
+    <div className="p-3 bg-white border-b border-[#0000002a]">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-[30px]">
           <div className="font-bold text-2xl">ZKP-G1 </div>
