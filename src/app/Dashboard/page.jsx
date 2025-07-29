@@ -11,20 +11,27 @@ import { Modal } from "antd";
 import Link from "next/link";
 
 import { Table } from "antd";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import UserProfile from "../UserProfile/page";
+import { redirect } from "next/navigation";
 
 const Dashboard = () => {
   const [value, setValue] = useState("1");
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-
   const [addrees_id, getAddress_id] = useState("688480f24c392e2c2faac2f2");
   const [activeTab, setActiveTab] = useState("dashboard");
   const [isMounted, setIsMounted] = useState(false);
   const [modalText, setModalText] = useState(
     "Bạn có chắc chắn muốn gửi tiền tới : 688480f24c392e2c2faac2f2?"
   );
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      redirect("/Login");
+    }
+  }, []);
   useEffect(() => {
     setIsMounted(true);
   }, []);

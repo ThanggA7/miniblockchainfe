@@ -1,12 +1,16 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation"; // ✅ import useRouter
 
+import axios from "axios";
 export default function AuthPage() {
+  const router = useRouter();
+
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({
     name: "",
     wallet: "",
-    email: "",
+    username: "",
     password: "",
   });
 
@@ -14,12 +18,22 @@ export default function AuthPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isLogin) {
-      console.log("Login with:", form.email);
-    } else {
-      console.log("Register with:", form);
+    //test api login
+    try {
+      const res = await axios.post("https://dummyjson.com/auth/login", {
+        username: form.username,
+        password: form.password,
+      });
+
+      const { token } = res.data.accessToken;
+
+      localStorage.setItem("token", token);
+      router.push("/Dashboard");
+    } catch (error) {
+      alert("Đăng nhập thất bại: " + error.response?.data?.message || "Lỗi");
+      console.log(error);
     }
   };
 
@@ -54,10 +68,10 @@ export default function AuthPage() {
           )}
 
           <input
-            name="email"
-            type="email"
-            placeholder="Email (Gmail)"
-            value={form.email}
+            name="username"
+            type="text"
+            placeholder="Tên đăng nhập"
+            value={form.username}
             onChange={handleChange}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
