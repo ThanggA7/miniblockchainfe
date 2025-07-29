@@ -1,13 +1,14 @@
 "use client";
 import Header from "@/components/Header";
-import { Wallet, Link } from "lucide-react";
+import { Wallet } from "lucide-react";
 import Sidebar from "@/components/Sidebar";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
-import { Button, Modal } from "antd";
+import { Modal } from "antd";
+import Link from "next/link";
 
 import { Table } from "antd";
 import React, { useState, useEffect } from "react";
@@ -48,17 +49,17 @@ const Dashboard = () => {
   };
   const columns = [
     {
-      title: "Tên",
+      title: "Từ ",
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Tuổi",
+      title: "Đến",
       dataIndex: "age",
       key: "age",
     },
     {
-      title: "Địa chỉ",
+      title: "Thời gian",
       dataIndex: "address",
       key: "address",
     },
@@ -135,7 +136,7 @@ const Dashboard = () => {
                     className="p-2 bg-[#D0DBFF] rounded-full text-blue-600"
                   />
                   <span className="text-[14px] font-semibold text-black">
-                    Balance
+                    Tổng nợ
                   </span>
                 </div>
                 <p className="mt-5 font-bold text-black text-[18px]">
@@ -150,14 +151,51 @@ const Dashboard = () => {
                     className="p-2 bg-[#D0DBFF] rounded-full text-blue-600"
                   />
                   <span className="text-[14px] font-semibold text-black">
-                    Balance
+                    ZK Proof
                   </span>
                 </div>
-                <p className="mt-5 font-bold text-black text-[18px]">
-                  -$103,000
-                </p>
+                <div className="flex flex-col gap-1 ">
+                  <Link
+                    href=""
+                    className="mt-2 font-bold text-blue-600 underline text-[14px] active:text-red-400"
+                  >
+                    proof.json
+                  </Link>
+                  <Link
+                    href=""
+                    className=" font-bold text-blue-600 underline text-[14px] active:text-red-400"
+                  >
+                    public.json
+                  </Link>
+                  <Link
+                    href=""
+                    className=" font-bold text-blue-600 underline text-[14px] active:text-red-400"
+                  >
+                    verification_key.json
+                  </Link>
+                </div>
               </div>
 
+              <div className="w-[230px] h-[130px] bg-white rounded-[6px] p-3">
+                <div className="flex items-center gap-2">
+                  <Wallet
+                    size={30}
+                    className="p-2 bg-[#D0DBFF] rounded-full text-blue-600"
+                  />
+                  <span className="text-[14px] font-semibold text-black">
+                    Final hash (Merkle root & timestamp)
+                  </span>
+                </div>
+                <div className="flex flex-col gap-1 ">
+                  <span
+                    title="1cf62965e5613cd404f589bbe2e214de8b504177c655e9533c41d24e86fae1d32"
+                    className="mt-2  text-[14px] overflow-hidden whitespace-nowrap overflow-ellipsis "
+                  >
+                    1cf62965e5613cd404f589bbe2e214de8b504177c655e9533c41d24e86fae1d3
+                  </span>
+                  <span className="  text-[14px] ">8:30 AM - 23/7/2025</span>
+                </div>
+              </div>
               <div className="w-[200px] h-[130px] bg-white rounded-[6px] p-3">
                 <div className="flex items-center gap-2">
                   <Wallet
@@ -165,16 +203,20 @@ const Dashboard = () => {
                     className="p-2 bg-[#D0DBFF] rounded-full text-blue-600"
                   />
                   <span className="text-[14px] font-semibold text-black">
-                    Balance
+                    ZK Proof
                   </span>
                 </div>
-                <p className="mt-5 font-bold text-black text-[18px]">
-                  -$103,000
-                </p>
+                <div className="flex flex-col gap-1 ">
+                  <Link
+                    href=""
+                    className="mt-2 font-bold text-blue-600 underline text-[14px] active:text-red-400"
+                  >
+                    proof.json
+                  </Link>
+                </div>
               </div>
             </div>
-
-            <div className="w-full h-[400px] max-h-[400px] bg-white mt-5 rounded-[6px] overflow-y-auto">
+            <div className="w-full h-[450px] max-h-[405px] bg-white mt-5 rounded-[6px] overflow-y-auto">
               <Box sx={{ width: "100%", typography: "body1" }}>
                 <TabContext value={value}>
                   <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -190,46 +232,34 @@ const Dashboard = () => {
                     </TabList>
                   </Box>
                   <TabPanel
-                    className="w-full max-h-[350px] overflow-y-auto"
+                    className="w-full max-h-[550px] overflow-y-auto"
                     value="1"
                   >
                     <Table
-                      pagination={{
-                        pageSize: 3,
-                        showSizeChanger: true,
-                        pageSizeOptions: ["3", "10", "20", "50"],
-                        showQuickJumper: true,
-                      }}
+                      pagination={false}
+                      scroll={{ y: 250 }}
                       columns={columns}
                       dataSource={data}
                     />
                   </TabPanel>
                   <TabPanel
-                    className="w-full max-h-[350px] overflow-y-auto"
+                    className="w-full max-h-[550px] overflow-y-auto"
                     value="2"
                   >
                     <Table
-                      pagination={{
-                        pageSize: 3,
-                        showSizeChanger: true,
-                        pageSizeOptions: ["3", "10", "20", "50"],
-                        showQuickJumper: true,
-                      }}
+                      pagination={false}
+                      scroll={{ y: 250 }}
                       columns={columns}
                       dataSource={data}
                     />
-                  </TabPanel>{" "}
+                  </TabPanel>
                   <TabPanel
-                    className="w-full max-h-[350px] overflow-y-auto"
+                    className="w-full max-h-[550px] overflow-y-auto"
                     value="3"
                   >
                     <Table
-                      pagination={{
-                        pageSize: 3,
-                        showSizeChanger: true,
-                        pageSizeOptions: ["3", "10", "20", "50"],
-                        showQuickJumper: true,
-                      }}
+                      pagination={false}
+                      scroll={{ y: 250 }}
                       columns={columns}
                       dataSource={data}
                     />
@@ -240,31 +270,17 @@ const Dashboard = () => {
           </div>
 
           <div className="p-4 min-w-[400px]">
-            <div className="h-[250px] bg-white rounded-[6px] p-3">
+            <div className="min-h-[50px] bg-white rounded-[6px] p-3">
               <span className="flex items-center justify-center font-bold">
                 Nạp tiền vào sàn
               </span>
               <div>
                 <div className="mt-5 relative">
-                  <input
-                    className="w-full h-[45px] border border-[#CACACA] outline-none border-[1px] text-[#626262] rounded-[4px] text-[16px] p-1 text-center "
-                    type="text"
-                    value={addrees_id}
-                    onChange={(e) => {
-                      getAddress_id(e.target.value);
-                    }}
-                  />
-                  <input
-                    className="w-full h-[45px] border border-[#CACACA] outline-none border-[1px] rounded-[4px] text-[14px] p-1  mt-3 no-spinner"
-                    type="number"
-                    placeholder="Nhập số tiền cần chuyển vào sàn"
-                  />
-                  <Link className="absolute left-1/2 -translate-x-1/2 top-[40px] z-10 " />
-                </div>
-                <div>
-                  <button className="px-2 py-2 w-full  bg-[#2752E7] mt-5 rounded-[3px] cursor-pointer text-white text-[16px] font-semibold">
-                    Nạp tiền
-                  </button>
+                  <div className="w-full h-[45px] border border-[#CACACA] outline-none border-[1px] text-[#626262] rounded-[4px] text-[16px] flex flex-col items-center justify-center ">
+                    <span className="overflow-hidden whitespace-nowrap overflow-ellipsis w-[300px]">
+                      1cf62965e5613cd404f589bbe2e214de8b504177c655e9533c41d24e86fae1d3
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -301,6 +317,21 @@ const Dashboard = () => {
                 >
                   <p>{modalText}</p>
                 </Modal>
+              </div>
+            </div>
+            <div className="min-h-[150px] bg-white rounded-[6px] p-3 mt-5">
+              <div>
+                <div className="mt-1">
+                  <span className="font-bold">Rút tiền</span>
+                  <input
+                    className="w-full h-[45px] border border-[#CACACA] outline-none border-[1px] rounded-[4px] text-[14px] p-1  mt-1 no-spinner"
+                    type="number"
+                    placeholder="Nhập số tiền muốn rút"
+                  />
+                  <button className="px-2 py-2 w-full  bg-[#2752E7] mt-5 rounded-[3px] cursor-pointer text-white text-[16px] font-semibold">
+                    Rút tiền
+                  </button>
+                </div>
               </div>
             </div>
           </div>

@@ -27,28 +27,15 @@ const UserProfile = () => {
           </div>
 
           <div className="border-t pt-4">
-            <h3 className="font-medium text-gray-700 mb-2">My Wallet</h3>
+            <div>
+              <h3 className="font-medium text-gray-700 mb-2">
+                Wallet Adress: test123213213123213213213
+              </h3>
+            </div>
             <div className="space-y-1">
               <p className="text-gray-800">Peterson Kennedy</p>
               <p className="text-gray-600">petersonkenn@demo.com</p>
             </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="font-medium text-gray-700 mb-4">API keys</h3>
-            <p className="text-sm text-gray-500">Manage your API access</p>
-          </div>
-
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="font-medium text-gray-700 mb-4">Login history</h3>
-            <p className="text-sm text-gray-500">View recent activity</p>
-          </div>
-
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="font-medium text-gray-700 mb-4">2FA</h3>
-            <p className="text-sm text-gray-500">3M_2FA</p>
           </div>
         </div>
 
