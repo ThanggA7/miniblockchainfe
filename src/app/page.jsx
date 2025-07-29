@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Dashboard from "./Dashboard/page";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return <Dashboard />;
+  return redirect("/Login");
 }

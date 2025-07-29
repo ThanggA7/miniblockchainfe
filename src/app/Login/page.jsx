@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 
 export default function AuthPage() {
@@ -16,10 +17,8 @@ export default function AuthPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isLogin) {
-      // Xử lý login bằng email (Gmail)
       console.log("Login with:", form.email);
     } else {
-      // Xử lý register
       console.log("Register with:", form);
     }
   };
