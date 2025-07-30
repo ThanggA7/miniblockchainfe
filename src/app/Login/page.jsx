@@ -1,10 +1,11 @@
 "use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation"; // ✅ import useRouter
-
-import axios from "axios";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../../contexts/AuthContext";
+import Link from "next/link";
 export default function AuthPage() {
   const router = useRouter();
+  const { login, signup, loading, isAuthenticated } = useAuth();
 
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({
@@ -14,36 +15,67 @@ export default function AuthPage() {
     password: "",
   });
 
+  // Redirect nếu đã login
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/Dashboard");
+    }
+  }, [isAuthenticated, router]);
+
+  // Hiển thị loading khi đang kiểm tra auth
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Đang kiểm tra đăng nhập...</p>
+        </div>
+      </div>
+    );
+  }
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //test api login
-    try {
-      const res = await axios.post("https://dummyjson.com/auth/login", {
-        username: form.username,
-        password: form.password,
-      });
 
-      const { token } = res.data.accessToken;
+    if (isLogin) {
+      // Xử lý đăng nhập
+      const result = await login(form.username, form.password);
+      
+      if (result.success) {
+        alert("Đăng nhập thành công!");
+        router.push("/Dashboard");
+      } else {
+        alert("Đăng nhập thất bại: " + result.error);
+      }
+    } else {
+      // Xử lý đăng ký
+      if (!form.name || !form.wallet) {
+        alert("Vui lòng điền đầy đủ thông tin!");
+        return;
+      }
 
-      localStorage.setItem("token", token);
-      router.push("/Dashboard");
-    } catch (error) {
-      alert("Đăng nhập thất bại: " + error.response?.data?.message || "Lỗi");
-      console.log(error);
+      const result = await signup(form.username, form.password, form.wallet);
+      
+      if (result.success) {
+        alert("Đăng ký thành công!");
+        router.push("/Dashboard");
+      } else {
+        alert("Đăng ký thất bại: " + result.error);
+      }
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-      <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-lg">
-        <h2 className="text-2xl font-bold text-center mb-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-600 to-purple-700 flex items-center justify-center px-4 py-6">
+      <div className="max-w-md w-full bg-white p-6 md:p-8 rounded-xl shadow-2xl">
+        <h2 className="text-xl md:text-2xl font-bold text-center mb-4 md:mb-6 text-gray-800">
           {isLogin ? "Đăng nhập" : "Đăng ký"}
         </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
           {!isLogin && (
             <>
               <input
@@ -52,7 +84,7 @@ export default function AuthPage() {
                 placeholder="Tên của bạn"
                 value={form.name}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm md:text-base"
                 required
               />
               <input
@@ -61,7 +93,7 @@ export default function AuthPage() {
                 placeholder="Địa chỉ ví (AddressWallet)"
                 value={form.wallet}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm md:text-base"
                 required
               />
             </>
@@ -73,7 +105,7 @@ export default function AuthPage() {
             placeholder="Tên đăng nhập"
             value={form.username}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm md:text-base"
             required
           />
 
@@ -83,26 +115,24 @@ export default function AuthPage() {
             placeholder="Mật khẩu"
             value={form.password}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm md:text-base"
             required
           />
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
+            disabled={loading}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 md:py-3 rounded-lg transition duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed font-medium text-sm md:text-base"
           >
-            {isLogin ? "Đăng nhập" : "Đăng ký"}
+            {loading ? "Đang xử lý..." : (isLogin ? "Đăng nhập" : "Đăng ký")}
           </button>
         </form>
 
-        <p className="text-center mt-4">
-          {isLogin ? "Chưa có tài khoản?" : "Đã có tài khoản?"}{" "}
-          <button
-            onClick={() => setIsLogin(!isLogin)}
-            className="text-blue-500 hover:underline"
-          >
-            {isLogin ? "Đăng ký ngay" : "Đăng nhập"}
-          </button>
+        <p className="text-center mt-4 md:mt-6 text-sm md:text-base text-gray-600">
+          Chưa có tài khoản?{" "}
+          <Link href="/Signup" className="text-blue-600 hover:text-blue-700 font-medium hover:underline">
+            Đăng ký ngay
+          </Link>
         </p>
       </div>
     </div>
