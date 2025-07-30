@@ -36,7 +36,7 @@ const Header = () => {
           <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm cursor-pointer">
             {(user?.username || user?.name || "User").charAt(0).toUpperCase()}
           </div>
-          <div className="w-[260px] bg-white absolute right-0 top-12 z-50 rounded-xl hidden group-hover:block p-4 shadow-xl border border-gray-200">
+          <div className="w-[260px] bg-white absolute right-0 top-0 z-50 rounded-xl hidden group-hover:block p-4 shadow-xl border border-gray-200">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold">
                 {(user?.username || user?.name || "User")

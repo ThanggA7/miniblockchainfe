@@ -150,7 +150,7 @@ const Dashboard = () => {
     setConfirmLoading(true);
     try {
       const response = await transactionAPI.createTransaction({
-        toUID: parseInt(transferForm.toUID), 
+        toUID: parseInt(transferForm.toUID),
         amount: parseFloat(transferForm.amount),
       });
 

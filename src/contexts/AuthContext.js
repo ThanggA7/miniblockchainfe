@@ -39,6 +39,7 @@ export const AuthProvider = ({ children }) => {
       const userData = response.data;
 
       console.log("Auth check successful:", userData);
+      console.log("User UID:", userData.uid); // Debug UID
       setUser(userData);
     } catch (error) {
       console.log("No active session or server not running:", error.message);
@@ -54,6 +55,18 @@ export const AuthProvider = ({ children }) => {
       if (response.data.redirect) {
         setAuthChecked(false);
         await checkAuthStatus(); 
+        
+        // Lưu UID vào sessionStorage sau khi login thành công
+        try {
+          const userResponse = await authAPI.getUserUID();
+          if (userResponse.data.uid) {
+            sessionStorage.setItem('uid', userResponse.data.uid);
+            console.log('UID saved to sessionStorage:', userResponse.data.uid);
+          }
+        } catch (error) {
+          console.error('Failed to save UID to session:', error);
+        }
+        
         return { success: true };
       }
     } catch (error) {
@@ -88,6 +101,9 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setUser(null);
       setAuthChecked(false); 
+      // Xóa UID khỏi sessionStorage khi logout
+      sessionStorage.removeItem('uid');
+      console.log('UID removed from sessionStorage');
     }
   };
 

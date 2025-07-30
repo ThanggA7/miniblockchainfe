@@ -26,6 +26,8 @@ export const authAPI = {
 
   getUserInfo: () => api.get("/auth/user"),
 
+  getUserUID: () => api.get("/auth/user/uid"),
+
   getSessionInfo: () => api.get("/auth/session"),
 
   getCurrentUID: () => {

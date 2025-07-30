@@ -1,10 +1,51 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { authAPI } from "../../utils/api";
 
 const UserProfile = () => {
   const { user, logout } = useAuth();
+  const [uid, setUid] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getUID = async () => {
+      try {
+        // Thử lấy từ sessionStorage trước
+        const sessionUID =
+          sessionStorage.getItem("uid") || sessionStorage.getItem("UID");
+        if (sessionUID) {
+          setUid(sessionUID);
+          setLoading(false);
+          return;
+        }
+
+        // Nếu không có trong sessionStorage, gọi API để lấy từ backend session
+        try {
+          const response = await authAPI.getUserUID();
+          console.log("API Response:", response.data);
+          if (response.data.uid) {
+            setUid(response.data.uid);
+            // Lưu vào sessionStorage cho lần sau
+            sessionStorage.setItem("uid", response.data.uid);
+          }
+        } catch (apiError) {
+          console.error("API Error:", apiError);
+          setUid(null);
+        }
+      } catch (error) {
+        console.error("Error getting UID:", error);
+        setUid(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user) {
+      getUID();
+    }
+  }, [user]);
 
   const handleUpdateProfile = () => {
     alert(
@@ -78,7 +119,11 @@ const UserProfile = () => {
                   </label>
                   <div className="bg-gray-50 p-3 rounded-lg border">
                     <p className="text-gray-900 font-mono text-sm break-all">
-                      {user?.uid || "N/A"}
+                      {loading
+                        ? "Đang tải..."
+                        : uid
+                        ? `#${uid}`
+                        : "Không có UID"}
                     </p>
                   </div>
                 </div>
