@@ -10,7 +10,6 @@ import TabPanel from "@mui/lab/TabPanel";
 import { Modal } from "antd";
 import Link from "next/link";
 import ProtectedRoute from "@/components/ProtectedRoute";
-
 import { Table } from "antd";
 import React, { useState, useEffect, use } from "react";
 import UserProfile from "../UserProfile/page";
@@ -20,6 +19,7 @@ import {
   depositAPI,
   withdrawAPI,
   authAPI,
+  metadaAPI,
 } from "../../utils/api";
 
 const Dashboard = () => {
@@ -43,6 +43,12 @@ const Dashboard = () => {
   const [withdrawForm, setWithdrawForm] = useState({
     amount: "",
   });
+  const [mtadata, setMtaData] = useState({
+    timestamp: "",
+    expectedDebtSum: "",
+    finalHash: "",
+  });
+  console.log(mtadata);
 
   const [modalText, setModalText] = useState("");
 
@@ -61,6 +67,7 @@ const Dashboard = () => {
         fetchDeposits(),
         fetchWithdrawals(),
         fetchUserBalance(),
+        MTData(),
       ]);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -72,6 +79,7 @@ const Dashboard = () => {
   const fetchTransactions = async () => {
     try {
       const response = await transactionAPI.getTransactions();
+      console.log("Transactions data:", response.data); // Debug log
       setTransactions(response.data);
     } catch (error) {
       console.error("Error fetching transactions:", error);
@@ -93,6 +101,7 @@ const Dashboard = () => {
     try {
       const response = await withdrawAPI.getWithdrawals();
       setWithdrawals(response.data);
+      console.log(withdrawals);
     } catch (error) {
       console.error("Error fetching withdrawals:", error);
       setWithdrawals([]);
@@ -107,6 +116,15 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Error fetching balance:", error);
       setUserBalance(user?.balance || 0); // Fallback to cached user balance
+    }
+  };
+
+  const MTData = async () => {
+    try {
+      const response = await metadaAPI.getProofmetaData();
+      setMtaData(response.data || "null");
+    } catch (error) {
+      console.error("Error fetching balance:", error);
     }
   };
 
@@ -180,6 +198,11 @@ const Dashboard = () => {
       title: "Người dùng",
       dataIndex: "username",
       key: "username",
+      render: (username, record) => (
+        <span className="font-medium text-gray-900">
+          {username || "Không xác định"}
+        </span>
+      ),
     },
     {
       title: "Số tiền",
@@ -198,6 +221,7 @@ const Dashboard = () => {
       key: "timestamp",
       render: (timestamp) => new Date(timestamp).toLocaleString("vi-VN"),
     },
+    // Debug column - có thể xóa sau
   ];
 
   const depositColumns = [
@@ -226,7 +250,7 @@ const Dashboard = () => {
       title: "Địa chỉ ví",
       dataIndex: "to_address",
       key: "to_address",
-      render: (address) => `${address?.slice(0, 6)}...${address?.slice(-4)}`,
+      render: (address) => `${user?.walletAddress}`,
     },
     {
       title: "Số tiền",
@@ -312,7 +336,9 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div>
-                      <p className="text-2xl font-bold">$0</p>
+                      <p className="text-2xl font-bold">
+                        ${mtadata.expectedDebtSum}
+                      </p>
                       <p className="text-red-200 text-xs mt-1">No debt</p>
                     </div>
                   </div>
@@ -333,21 +359,24 @@ const Dashboard = () => {
                     </div>
                     <div className="space-y-1">
                       <Link
-                        href="#"
+                        target="blank"
+                        href="http://localhost:5000/zk-proof/proof.json"
                         className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
                       >
                         <div className="w-1.5 h-1.5 bg-green-400 rounded-full"></div>
                         <span className="text-xs font-medium">proof.json</span>
                       </Link>
                       <Link
-                        href="#"
+                        target="blank"
+                        href="http://localhost:5000/zk-proof/public.json"
                         className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
                       >
                         <div className="w-1.5 h-1.5 bg-green-400 rounded-full"></div>
                         <span className="text-xs font-medium">public.json</span>
                       </Link>
                       <Link
-                        href="#"
+                        target="blank"
+                        href="http://localhost:5000/zk-proof/verification_key.json"
                         className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
                       >
                         <div className="w-1.5 h-1.5 bg-green-400 rounded-full"></div>
@@ -372,14 +401,20 @@ const Dashboard = () => {
                     </div>
                     <div className="space-y-1">
                       <span
-                        title="1cf62965e5613cd404f589bbe2e214de8b504177c655e9533c41d24e86fae1d32"
+                        title={mtadata.finalHash}
                         className="block text-xs text-gray-600 truncate font-mono break-all"
                       >
-                        1cf62965e5613cd404f589bbe2e214...
+                        {mtadata.finalHash}
                       </span>
                       <p className="text-xs text-gray-500">
-                        Generated: {new Date().toLocaleTimeString("vi-VN")} -{" "}
-                        {new Date().toLocaleDateString("vi-VN")}
+                        Generated:{" "}
+                        {new Date(Number(mtadata.timestamp)).toLocaleTimeString(
+                          "vi-VN"
+                        )}{" "}
+                        -{" "}
+                        {new Date(Number(mtadata.timestamp)).toLocaleDateString(
+                          "vi-VN"
+                        )}
                       </p>
                     </div>
                   </div>
@@ -391,23 +426,31 @@ const Dashboard = () => {
                       </div>
                       <div>
                         <h3 className="text-gray-900 font-semibold">
-                          Latest Proof
+                          Merkle proof
                         </h3>
-                        <p className="text-gray-500 text-xs">Last updated</p>
+                        <p className="text-gray-500 text-xs">Merkle proof</p>
                       </div>
                     </div>
                     <div className="space-y-1">
                       <Link
-                        href="#"
+                        target="blank"
+                        href="http://localhost:5000/merkle-proof"
                         className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
                       >
                         <div className="w-1.5 h-1.5 bg-green-400 rounded-full"></div>
                         <span className="text-xs font-medium">
-                          latest_proof.json
+                          Merkle proof.json
                         </span>
                       </Link>
                       <p className="text-xs text-gray-500">
-                        Updated: {new Date().toLocaleDateString("vi-VN")}
+                        Update:{" "}
+                        {new Date(Number(mtadata.timestamp)).toLocaleTimeString(
+                          "vi-VN"
+                        )}{" "}
+                        -{" "}
+                        {new Date(Number(mtadata.timestamp)).toLocaleDateString(
+                          "vi-VN"
+                        )}
                       </p>
                     </div>
                   </div>
@@ -507,11 +550,13 @@ const Dashboard = () => {
                       <div className="space-y-3">
                         <div>
                           <label className="block text-xs font-medium text-gray-700 mb-1">
-                            Địa chỉ ví của bạn
+                            Địa chỉ ví sàn
                           </label>
                           <div className="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg">
                             <span className="text-xs text-gray-700 break-all font-mono">
-                              {user?.walletAddress || "0x1234...5678"}
+                              {
+                                "686cd78ceabb453001dc499b2e2bfd5a6ff48da6d776480a543a7bf0432611bc"
+                              }
                             </span>
                           </div>
                           <p className="text-xs text-gray-500 mt-1">

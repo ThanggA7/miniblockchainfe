@@ -18,11 +18,9 @@ export const AuthProvider = ({ children }) => {
   const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
-    console.log("AuthProvider mounted, checking auth status...");
     if (!authChecked) {
       checkAuthStatus();
     }
-
   }, []);
 
   const checkAuthStatus = async () => {
@@ -54,19 +52,18 @@ export const AuthProvider = ({ children }) => {
       const response = await authAPI.login(username, password);
       if (response.data.redirect) {
         setAuthChecked(false);
-        await checkAuthStatus(); 
-        
-        // Lưu UID vào sessionStorage sau khi login thành công
+        await checkAuthStatus();
+
         try {
           const userResponse = await authAPI.getUserUID();
           if (userResponse.data.uid) {
-            sessionStorage.setItem('uid', userResponse.data.uid);
-            console.log('UID saved to sessionStorage:', userResponse.data.uid);
+            sessionStorage.setItem("uid", userResponse.data.uid);
+            console.log("UID saved to sessionStorage:", userResponse.data.uid);
           }
         } catch (error) {
-          console.error('Failed to save UID to session:', error);
+          console.error("Failed to save UID to session:", error);
         }
-        
+
         return { success: true };
       }
     } catch (error) {
@@ -82,7 +79,7 @@ export const AuthProvider = ({ children }) => {
       const response = await authAPI.signup(username, password, walletAddress);
       if (response.data.redirect) {
         setAuthChecked(false);
-        await checkAuthStatus(); 
+        await checkAuthStatus();
         return { success: true };
       }
     } catch (error) {
@@ -100,10 +97,10 @@ export const AuthProvider = ({ children }) => {
       console.error("Logout error:", error);
     } finally {
       setUser(null);
-      setAuthChecked(false); 
+      setAuthChecked(false);
       // Xóa UID khỏi sessionStorage khi logout
-      sessionStorage.removeItem('uid');
-      console.log('UID removed from sessionStorage');
+      sessionStorage.removeItem("uid");
+      console.log("UID removed from sessionStorage");
     }
   };
 

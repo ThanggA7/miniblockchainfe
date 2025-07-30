@@ -71,4 +71,8 @@ export const withdrawAPI = {
   createWithdrawal: (data) => api.post("/withdraws", data),
 };
 
+export const metadaAPI = {
+  getProofmetaData: () => api.get("/proof-metadata"),
+};
+
 export default api;
