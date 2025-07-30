@@ -1,7 +1,7 @@
 "use client";
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '../contexts/AuthContext';
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../contexts/AuthContext";
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -10,7 +10,7 @@ const ProtectedRoute = ({ children }) => {
   // Bật lại protection
   useEffect(() => {
     if (!loading && !isAuthenticated) {
-      router.push('/Login');
+      router.push("/Login");
     }
   }, [isAuthenticated, loading, router]);
 

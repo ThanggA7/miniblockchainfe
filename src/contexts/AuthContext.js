@@ -1,13 +1,13 @@
 "use client";
-import { createContext, useContext, useState, useEffect } from 'react';
-import { authAPI } from '../utils/api';
+import { createContext, useContext, useState, useEffect } from "react";
+import { authAPI } from "../utils/api";
 
 const AuthContext = createContext();
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
@@ -18,12 +18,12 @@ export const AuthProvider = ({ children }) => {
   const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
-    console.log('AuthProvider mounted, checking auth status...');
+    console.log("AuthProvider mounted, checking auth status...");
     // Chỉ check auth một lần khi component mount
     if (!authChecked) {
       checkAuthStatus();
     }
-    
+
     // Comment các dòng này khi muốn bật auth thực
     /*
     const timer = setTimeout(() => {
@@ -35,21 +35,21 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthStatus = async () => {
     if (authChecked) {
-      console.log('Auth already checked, skipping...');
+      console.log("Auth already checked, skipping...");
       return;
     }
-    
+
     try {
-      console.log('Checking auth status...');
+      console.log("Checking auth status...");
       setAuthChecked(true);
-      
+
       const response = await authAPI.getUserInfo();
       const userData = response.data;
-      
-      console.log('Auth check successful:', userData);
+
+      console.log("Auth check successful:", userData);
       setUser(userData);
     } catch (error) {
-      console.log('No active session or server not running:', error.message);
+      console.log("No active session or server not running:", error.message);
       setUser(null);
     } finally {
       setLoading(false);
@@ -66,9 +66,9 @@ export const AuthProvider = ({ children }) => {
         return { success: true };
       }
     } catch (error) {
-      return { 
-        success: false, 
-        error: error.response?.data?.error || "Đăng nhập thất bại" 
+      return {
+        success: false,
+        error: error.response?.data?.error || "Đăng nhập thất bại",
       };
     }
   };
@@ -83,9 +83,9 @@ export const AuthProvider = ({ children }) => {
         return { success: true };
       }
     } catch (error) {
-      return { 
-        success: false, 
-        error: error.response?.data?.error || "Đăng ký thất bại" 
+      return {
+        success: false,
+        error: error.response?.data?.error || "Đăng ký thất bại",
       };
     }
   };
@@ -94,7 +94,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await authAPI.logout();
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Logout error:", error);
     } finally {
       setUser(null);
       setAuthChecked(false); // Reset flag để có thể check lại khi login
@@ -105,11 +105,11 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await authAPI.getUserInfo();
       const userData = response.data;
-      
+
       setUser(userData);
       return userData;
     } catch (error) {
-      console.error('Error refreshing user info:', error);
+      console.error("Error refreshing user info:", error);
       return null;
     }
   };
@@ -124,9 +124,5 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated: !!user,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

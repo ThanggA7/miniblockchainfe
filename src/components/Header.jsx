@@ -13,7 +13,7 @@ const Header = () => {
 
   const handleLogout = async () => {
     await logout();
-    router.push('/Login');
+    router.push("/Login");
   };
 
   return (
@@ -23,31 +23,44 @@ const Header = () => {
           <div className="lg:hidden font-bold text-xl text-gray-800">ZKP</div>
           <div className="hidden md:block">
             <div className="flex flex-col">
-              <span className="text-lg font-semibold text-gray-800">Welcome, {user?.username || user?.name || 'User'}!</span>
-              <span className="text-sm text-gray-500">Manage your ZKP account</span>
+              <span className="text-lg font-semibold text-gray-800">
+                Welcome, {user?.username || user?.name || "User"}!
+              </span>
+              <span className="text-sm text-gray-500">
+                Manage your ZKP account
+              </span>
             </div>
           </div>
         </div>
         <div className="group flex items-center gap-3 relative">
           <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm cursor-pointer">
-            {(user?.username || user?.name || 'User').charAt(0).toUpperCase()}
+            {(user?.username || user?.name || "User").charAt(0).toUpperCase()}
           </div>
           <div className="w-[260px] bg-white absolute right-0 top-12 z-50 rounded-xl hidden group-hover:block p-4 shadow-xl border border-gray-200">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold">
-                {(user?.username || user?.name || 'User').charAt(0).toUpperCase()}
+                {(user?.username || user?.name || "User")
+                  .charAt(0)
+                  .toUpperCase()}
               </div>
               <div>
-                <div className="font-semibold text-gray-900">{user?.username || user?.name || 'User'}</div>
+                <div className="font-semibold text-gray-900">
+                  {user?.username || user?.name || "User"}
+                </div>
                 <div className="text-sm text-gray-500">Online</div>
               </div>
             </div>
 
             <div className="bg-gray-50 border border-gray-200 rounded-lg py-2 px-3 text-center text-sm text-gray-600 mb-4">
-              {user?.walletAddress ? `${user.walletAddress.slice(0, 8)}...${user.walletAddress.slice(-6)}` : 'No wallet connected'}
+              {user?.walletAddress
+                ? `${user.walletAddress.slice(
+                    0,
+                    8
+                  )}...${user.walletAddress.slice(-6)}`
+                : "No wallet connected"}
             </div>
 
-            <button 
+            <button
               onClick={handleLogout}
               className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg font-medium transition duration-200 text-sm"
             >

@@ -16,7 +16,7 @@ export default function Home() {
         router.push("/Login");
       }
     }
-    
+
     // Comment dòng này khi muốn bật auth thực
     // router.push("/Dashboard");
   }, [isAuthenticated, loading, router]);

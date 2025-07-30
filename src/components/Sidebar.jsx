@@ -5,7 +5,7 @@ import { Home, User, Menu, X } from "lucide-react";
 
 const Sidebar = ({ activeTab, setActiveTab }) => {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const tabs = [
     { key: "dashboard", label: "Dashboard", icon: <Home size={20} /> },
     { key: "profile", label: "Profile", icon: <User size={20} /> },
@@ -34,12 +34,14 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
       )}
 
       {/* Sidebar */}
-      <div className={`
+      <div
+        className={`
         fixed left-0 top-0 h-screen bg-white border-r border-gray-200
         flex flex-col z-50 transition-all duration-300 ease-in-out shadow-lg
         w-[240px] md:w-[260px] lg:w-[220px]
-        ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0
-      `}>
+        ${isOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0
+      `}
+      >
         {/* Header */}
         <div className="p-4 border-b border-gray-100">
           <div className="flex items-center gap-3">
@@ -77,11 +79,13 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
                       : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                   }`}
               >
-                <div className={`p-1.5 rounded-md ${
-                  activeTab === tab.key 
-                    ? "bg-blue-100 text-blue-600" 
-                    : "bg-gray-100 text-gray-500 group-hover:bg-gray-200"
-                }`}>
+                <div
+                  className={`p-1.5 rounded-md ${
+                    activeTab === tab.key
+                      ? "bg-blue-100 text-blue-600"
+                      : "bg-gray-100 text-gray-500 group-hover:bg-gray-200"
+                  }`}
+                >
                   {tab.icon}
                 </div>
                 <span>{tab.label}</span>

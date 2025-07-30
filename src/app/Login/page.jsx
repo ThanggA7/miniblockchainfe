@@ -44,7 +44,7 @@ export default function AuthPage() {
     if (isLogin) {
       // Xử lý đăng nhập
       const result = await login(form.username, form.password);
-      
+
       if (result.success) {
         alert("Đăng nhập thành công!");
         router.push("/Dashboard");
@@ -59,7 +59,7 @@ export default function AuthPage() {
       }
 
       const result = await signup(form.username, form.password, form.wallet);
-      
+
       if (result.success) {
         alert("Đăng ký thành công!");
         router.push("/Dashboard");
@@ -124,13 +124,16 @@ export default function AuthPage() {
             disabled={loading}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 md:py-3 rounded-lg transition duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed font-medium text-sm md:text-base"
           >
-            {loading ? "Đang xử lý..." : (isLogin ? "Đăng nhập" : "Đăng ký")}
+            {loading ? "Đang xử lý..." : isLogin ? "Đăng nhập" : "Đăng ký"}
           </button>
         </form>
 
         <p className="text-center mt-4 md:mt-6 text-sm md:text-base text-gray-600">
           Chưa có tài khoản?{" "}
-          <Link href="/Signup" className="text-blue-600 hover:text-blue-700 font-medium hover:underline">
+          <Link
+            href="/Signup"
+            className="text-blue-600 hover:text-blue-700 font-medium hover:underline"
+          >
             Đăng ký ngay
           </Link>
         </p>
