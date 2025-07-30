@@ -50,7 +50,7 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
             </div>
             <div>
               <h1 className="text-gray-900 font-bold text-lg">ZKP</h1>
-              <p className="text-gray-500 text-xs">Platform</p>
+              <p className="text-gray-500 text-xs">GROUP 1</p>
             </div>
           </div>
           {/* Mobile close button */}

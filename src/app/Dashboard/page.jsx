@@ -229,7 +229,14 @@ const Dashboard = () => {
       title: "Địa chỉ ví",
       dataIndex: "from_address",
       key: "from_address",
-      render: (address) => `${address?.slice(0, 6)}...${address?.slice(-4)}`,
+      render: (address) =>
+        `${user?.walletAddress?.slice(
+          0,
+          10
+        )} to ${"686cd78ceabb453001dc499b2e2bfd5a6ff48da6d776480a543a7bf0432611bc".slice(
+          0,
+          10
+        )}`,
     },
     {
       title: "Số tiền",
@@ -250,7 +257,7 @@ const Dashboard = () => {
       title: "Địa chỉ ví",
       dataIndex: "to_address",
       key: "to_address",
-      render: (address) => `${user?.walletAddress}`,
+      render: () => `${user?.walletAddress}`,
     },
     {
       title: "Số tiền",
@@ -317,7 +324,7 @@ const Dashboard = () => {
                     </div>
                     <div>
                       <p className="text-2xl font-bold">
-                        ${userBalance.toLocaleString()}
+                        {userBalance.toLocaleString()} ETH
                       </p>
                       <p className="text-blue-200 text-xs mt-1">
                         Updated today
@@ -337,9 +344,18 @@ const Dashboard = () => {
                     </div>
                     <div>
                       <p className="text-2xl font-bold">
-                        ${mtadata.expectedDebtSum}
+                        {mtadata.expectedDebtSum} ETH
                       </p>
-                      <p className="text-red-200 text-xs mt-1">No debt</p>
+                      <p className="text-xs text-white">
+                        Update:{" "}
+                        {new Date(Number(mtadata.timestamp)).toLocaleTimeString(
+                          "vi-VN"
+                        )}{" "}
+                        -{" "}
+                        {new Date(Number(mtadata.timestamp)).toLocaleDateString(
+                          "vi-VN"
+                        )}
+                      </p>
                     </div>
                   </div>
 
@@ -407,7 +423,7 @@ const Dashboard = () => {
                         {mtadata.finalHash}
                       </span>
                       <p className="text-xs text-gray-500">
-                        Generated:{" "}
+                        Update:{" "}
                         {new Date(Number(mtadata.timestamp)).toLocaleTimeString(
                           "vi-VN"
                         )}{" "}

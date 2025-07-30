@@ -105,14 +105,7 @@ const UserProfile = () => {
                     {user?.username || "Chưa có"}
                   </p>
                 </div>
-                <div>
-                  <label className="text-sm text-gray-500 block mb-1">
-                    Email
-                  </label>
-                  <p className="text-gray-900">
-                    {user?.email || "demo@zkp.com"}
-                  </p>
-                </div>
+
                 <div>
                   <label className="text-sm text-gray-500 block mb-1">
                     User ID (UID)
