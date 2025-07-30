@@ -8,7 +8,7 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    // Bật lại logic routing thông thường
+  
     if (!loading) {
       if (isAuthenticated) {
         router.push("/Dashboard");
@@ -17,11 +17,10 @@ export default function Home() {
       }
     }
 
-    // Comment dòng này khi muốn bật auth thực
-    // router.push("/Dashboard");
+
   }, [isAuthenticated, loading, router]);
 
-  // Loading state
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -33,5 +32,5 @@ export default function Home() {
     );
   }
 
-  return null; // Component sẽ redirect, không render gì
+  return null; 
 }

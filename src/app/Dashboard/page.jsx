@@ -30,14 +30,12 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [isMounted, setIsMounted] = useState(false);
 
-  // Data states
   const [transactions, setTransactions] = useState([]);
   const [deposits, setDeposits] = useState([]);
   const [withdrawals, setWithdrawals] = useState([]);
   const [userBalance, setUserBalance] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  // Form states
   const [transferForm, setTransferForm] = useState({
     toUID: "",
     amount: "",
@@ -152,14 +150,13 @@ const Dashboard = () => {
     setConfirmLoading(true);
     try {
       const response = await transactionAPI.createTransaction({
-        toUID: parseInt(transferForm.toUID), // Convert to number
+        toUID: parseInt(transferForm.toUID), 
         amount: parseFloat(transferForm.amount),
       });
 
       alert(response.data.message || "Chuyển tiền thành công!");
       setTransferForm({ toUID: "", amount: "" });
 
-      // Refresh user info và data
       await refreshUser();
       await fetchAllData();
     } catch (error) {
@@ -178,7 +175,6 @@ const Dashboard = () => {
     handleTransferSubmit();
   };
 
-  // Columns cho transaction table
   const transactionColumns = [
     {
       title: "Người dùng",
@@ -204,7 +200,6 @@ const Dashboard = () => {
     },
   ];
 
-  // Columns cho deposit table
   const depositColumns = [
     {
       title: "Địa chỉ ví",
@@ -226,7 +221,6 @@ const Dashboard = () => {
     },
   ];
 
-  // Columns cho withdrawal table
   const withdrawalColumns = [
     {
       title: "Địa chỉ ví",

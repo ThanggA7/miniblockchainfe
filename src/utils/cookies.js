@@ -1,4 +1,4 @@
-// Utility functions để làm việc với cookies
+
 export const getCookie = (name) => {
   if (typeof document === "undefined") return null;
 
@@ -22,7 +22,6 @@ export const deleteCookie = (name) => {
   document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
 };
 
-// Mapping table để map username với UID thực tế (dựa trên database)
 const USERNAME_UID_MAP = {
   hieu: "u1",
   toan: "u2",
@@ -32,9 +31,7 @@ const USERNAME_UID_MAP = {
   1234564: "1753840007149",
 };
 
-// Function để lấy UID từ localStorage hoặc mapping
 export const getUIDFromSession = () => {
-  // Kiểm tra localStorage cho UID đã lưu
   if (typeof window !== "undefined") {
     const storedUID = localStorage.getItem("userUID");
     if (storedUID) {
@@ -45,14 +42,12 @@ export const getUIDFromSession = () => {
   return null;
 };
 
-// Function để lấy UID từ username
 export const getUIDFromUsername = (username) => {
   const uid = USERNAME_UID_MAP[username];
   console.log(`Getting UID for username ${username}:`, uid);
   return uid || null;
 };
 
-// Function để lưu UID vào localStorage
 export const setUserUID = (uid) => {
   if (typeof window !== "undefined") {
     localStorage.setItem("userUID", uid);
@@ -60,7 +55,6 @@ export const setUserUID = (uid) => {
   }
 };
 
-// Function để xóa UID khỏi localStorage
 export const clearUserUID = () => {
   if (typeof window !== "undefined") {
     localStorage.removeItem("userUID");

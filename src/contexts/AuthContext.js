@@ -19,19 +19,11 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     console.log("AuthProvider mounted, checking auth status...");
-    // Chỉ check auth một lần khi component mount
     if (!authChecked) {
       checkAuthStatus();
     }
 
-    // Comment các dòng này khi muốn bật auth thực
-    /*
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-    */
-  }, []); // Empty dependency array để chỉ chạy một lần
+  }, []);
 
   const checkAuthStatus = async () => {
     if (authChecked) {
@@ -60,9 +52,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await authAPI.login(username, password);
       if (response.data.redirect) {
-        // Reset flag để cho phép auth check lại
         setAuthChecked(false);
-        await checkAuthStatus(); // Refresh user info
+        await checkAuthStatus(); 
         return { success: true };
       }
     } catch (error) {
@@ -77,9 +68,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await authAPI.signup(username, password, walletAddress);
       if (response.data.redirect) {
-        // Reset flag để cho phép auth check lại
         setAuthChecked(false);
-        await checkAuthStatus(); // Refresh user info
+        await checkAuthStatus(); 
         return { success: true };
       }
     } catch (error) {
@@ -97,7 +87,7 @@ export const AuthProvider = ({ children }) => {
       console.error("Logout error:", error);
     } finally {
       setUser(null);
-      setAuthChecked(false); // Reset flag để có thể check lại khi login
+      setAuthChecked(false); 
     }
   };
 

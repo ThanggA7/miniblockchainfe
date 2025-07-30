@@ -15,14 +15,14 @@ export default function AuthPage() {
     password: "",
   });
 
-  // Redirect nếu đã login
+
   useEffect(() => {
     if (isAuthenticated) {
       router.push("/Dashboard");
     }
   }, [isAuthenticated, router]);
 
-  // Hiển thị loading khi đang kiểm tra auth
+ 
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -42,7 +42,7 @@ export default function AuthPage() {
     e.preventDefault();
 
     if (isLogin) {
-      // Xử lý đăng nhập
+ 
       const result = await login(form.username, form.password);
 
       if (result.success) {
@@ -52,7 +52,7 @@ export default function AuthPage() {
         alert("Đăng nhập thất bại: " + result.error);
       }
     } else {
-      // Xử lý đăng ký
+    
       if (!form.name || !form.wallet) {
         alert("Vui lòng điền đầy đủ thông tin!");
         return;

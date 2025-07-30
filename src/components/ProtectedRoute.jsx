@@ -7,7 +7,7 @@ const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
   const router = useRouter();
 
-  // Bật lại protection
+
   useEffect(() => {
     if (!loading && !isAuthenticated) {
       router.push("/Login");
@@ -26,15 +26,12 @@ const ProtectedRoute = ({ children }) => {
   }
 
   if (!isAuthenticated) {
-    return null; // Will redirect to login
+    return null;
   }
 
   return children;
 
-  // Comment code này khi muốn tắt protection
-  /*
-  return children;
-  */
+ 
 };
 
 export default ProtectedRoute;
